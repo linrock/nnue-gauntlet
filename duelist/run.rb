@@ -15,7 +15,9 @@ while true
   nonce = "#{Time.now.to_i}-#{(10000 + rand*10000).to_i}"
   filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
   puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{filename}`
-  # upload PGNs to server, remove PGNs afterwards
-  puts "sleeping..."
-  sleep 2
+  api_response = `curl -F file=@#{filename} "#{API_URL}/pgns?api_key=#{API_KEY}"`
+  if api_response["success"]
+    puts "Successfully uploaded #{filename}"
+  end
+  sleep 3
 end
