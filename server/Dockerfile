@@ -9,7 +9,9 @@ RUN mkdir /gauntlet
 WORKDIR /gauntlet
 
 RUN git clone https://github.com/michiguel/Ordo
+RUN cd Ordo && make && ln -s /gauntlet/Ordo/ordo /usr/local/bin/
 
+COPY ordo_calc.sh .
 COPY api.py .
 
 EXPOSE $PORT
