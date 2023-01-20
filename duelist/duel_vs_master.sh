@@ -1,15 +1,26 @@
 #!/bin/bash
+if [ "$#" -ne 2 ]; then
+  echo "Usage: ./duel_with_master.sh <nn_to_duel> <tc>"
+  exit 0
+fi
 
-# tc=25k
-# tc_options="option.Hash=8 tc=10000+10000 nodes=25000"
+nn_to_duel=$1
+tc=$2
 
-# tc=stc
-# tc_options="option.Hash=16 tc=10+0.1"
-
-tc=ltc
-tc_options="option.Hash=64 tc=60+0.6"
-
-nn_to_test=nn-epoch759.nnue
+case $2 in
+  25k)
+    tc_options="option.Hash=8 tc=10000+10000 nodes=25000"
+    ;;
+  stc)
+    tc_options="option.Hash=16 tc=10+0.1"
+    ;;
+  ltc)
+    tc_options="option.Hash=64 tc=60+0.6"
+    ;;
+  *)
+    echo "tc must be one of: 25k, stc, ltc"
+    exit 1
+esac
 
 /root/c-chess-cli/c-chess-cli \
   -gauntlet -rounds 1 -games 1000 -concurrency 16 \
@@ -23,6 +34,6 @@ nn_to_test=nn-epoch759.nnue
     name=master \
   -engine \
     cmd=/root/Stockfish/src/stockfish \
-    name=$nn_to_test \
-    option.EvalFile=/root/$nn_to_test \
-  -pgn master-vs-${nn_to_test}-${tc}.pgn 0
+    name=$nn_to_duel \
+    option.EvalFile=/root/$nn_to_duel \
+  -pgn master-vs-${nn_to_duel}-${tc}.pgn 0
