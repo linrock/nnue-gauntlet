@@ -14,4 +14,4 @@ COPY api.py .
 
 EXPOSE $PORT
 ENV PORT $PORT
-CMD uvicorn api:app --host 0.0.0.0 --port ${PORT} --workers 3
+CMD uvicorn api:app --host 0.0.0.0 --port ${PORT} --workers 1
