@@ -7,11 +7,15 @@ while true
   api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
   match_data = JSON.parse api_response
   nn_to_duel = match_data["name"]
+  tc = match_data["tc"]
   unless File.exists? nn_to_duel
     `wget "#{API_URL}/nn?api_key=#{API_KEY}&name=#{nn_to_duel}" -O #{nn_to_duel}`
   end
-  puts "Duel: #{nn_to_duel}"
-  puts `./duel_vs_master.sh #{nn_to_duel} #{match_data["tc"]}`
+  puts "Duel: master vs #{nn_to_duel} @ #{tc}"
+  nonce = "#{Time.now.to_i}-#{(10000 + rand*10000).to_i}"
+  filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
+  puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{filename}`
+  # upload PGNs to server, remove PGNs afterwards
   puts "sleeping..."
   sleep 2
 end

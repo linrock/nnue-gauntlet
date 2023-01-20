@@ -1,11 +1,12 @@
 #!/bin/bash
-if [ "$#" -ne 2 ]; then
-  echo "Usage: ./duel_with_master.sh <nn_to_duel> <tc>"
+if [ "$#" -ne 3 ]; then
+  echo "Usage: ./duel_with_master.sh <nn_to_duel> <tc> <pgn_filename>"
   exit 0
 fi
 
 nn_to_duel=$1
 tc=$2
+pgn_filename=$3
 
 case $2 in
   25k)
@@ -33,4 +34,4 @@ c-chess-cli \
     cmd=stockfish name=master \
   -engine \
     cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel \
-  -pgn master-vs-${nn_to_duel}-${tc}.pgn 0
+  -pgn $pgn_filename 0
