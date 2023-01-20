@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-RUN apt update
+RUN apt update --fix-missing
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
   apt install -y build-essential vim git wget curl python3 ruby
 
