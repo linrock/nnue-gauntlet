@@ -22,18 +22,15 @@ case $2 in
     exit 1
 esac
 
-/root/c-chess-cli/c-chess-cli \
+c-chess-cli \
   -gauntlet -rounds 1 -games 1000 -concurrency 16 \
   -each option.Threads=1 timeout=20 $tc_options \
   -openings \
-    file=/root/books/UHO_XXL_+0.90_+1.19.epd \
+    file=/gauntlet/books/UHO_XXL_+0.90_+1.19.epd \
     order=random srand=${RANDOM}${RANDOM} \
   -repeat -resign count=3 score=700 -draw count=8 score=10 \
   -engine \
-    cmd=/root/Stockfish/src/stockfish \
-    name=master \
+    cmd=stockfish name=master \
   -engine \
-    cmd=/root/Stockfish/src/stockfish \
-    name=$nn_to_duel \
-    option.EvalFile=/root/$nn_to_duel \
+    cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel \
   -pgn master-vs-${nn_to_duel}-${tc}.pgn 0
