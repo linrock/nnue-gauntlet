@@ -18,6 +18,7 @@ while true
   api_response = `curl -F file=@#{filename} "#{API_URL}/pgns?api_key=#{API_KEY}"`
   if api_response["success"]
     puts "Successfully uploaded #{filename}"
+    `rm #{filename}`
   end
   sleep 3
 end
