@@ -1,7 +1,7 @@
 from glob import glob
 import os.path
 import random
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -27,11 +27,12 @@ def get_nn(api_key = '', name = ''):
     else:
         return {"error": "File not found"}
 
-class JsonRequestData(BaseModel):
-    api_key: str = ''
-    pgns: str
-
 @app.post('/pgns')
-def post_pgns(req: JsonRequestData):
+def post_pgns(api_key: str, file: UploadFile):
     if api_key != API_KEY: return {"error": "Unauthorized"}
-    return {"success": "pgn saved"}
+    print(f'Saving file: {file.filename}')
+    contents = file.file.read()
+    with open(f'pgns/{file.filename}', 'wb') as f:
+        f.write(contents)
+    file.file.close()
+    return {"success": f'{file.filename} saved'}
