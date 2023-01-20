@@ -11,12 +11,15 @@ pgn_filename=$3
 case $2 in
   25k)
     tc_options="option.Hash=8 tc=10000+10000 nodes=25000"
+    num_games=2000
     ;;
   stc)
     tc_options="option.Hash=16 tc=10+0.1"
+    num_games=500
     ;;
   ltc)
     tc_options="option.Hash=64 tc=60+0.6"
+    num_games=100
     ;;
   *)
     echo "tc must be one of: 25k, stc, ltc"
@@ -24,7 +27,7 @@ case $2 in
 esac
 
 c-chess-cli \
-  -gauntlet -rounds 1 -games 1000 -concurrency 16 \
+  -gauntlet -rounds 1 -games $num_games -concurrency 16 \
   -each option.Threads=1 timeout=20 $tc_options \
   -openings \
     file=/gauntlet/books/UHO_XXL_+0.90_+1.19.epd \
