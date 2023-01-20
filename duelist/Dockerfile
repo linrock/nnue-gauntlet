@@ -19,6 +19,14 @@ RUN python3 make.py
 RUN ln -s /gauntlet/c-chess-cli/c-chess-cli /usr/local/bin/
 
 WORKDIR /gauntlet
+RUN mkdir books
+
+WORKDIR /gauntlet/books
+RUN wget https://github.com/official-stockfish/books/raw/master/UHO_XXL_+0.90_+1.19.epd.zip
+RUN unzip UHO_XXL_+0.90_+1.19.epd.zip
+RUN rm UHO_XXL_+0.90_+1.19.epd.zip
+
+WORKDIR /gauntlet
 COPY duel_vs_master.sh .
 RUN chmod +x duel_vs_master.sh
 
