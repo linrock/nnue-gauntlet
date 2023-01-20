@@ -22,5 +22,7 @@ WORKDIR /gauntlet
 COPY duel_vs_master.sh .
 RUN chmod +x duel_vs_master.sh
 
+COPY run.rb .
+
 # CMD ruby run.rb
 CMD sleep infinity
