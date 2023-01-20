@@ -1,5 +1,5 @@
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
-API_URL = 'http://localhost:3000'
+API_URL = 'http://localhost:6055'
 
 while true
   api_response = `curl #{API_URL}/gauntlet?api_key=#{API_KEY}`
