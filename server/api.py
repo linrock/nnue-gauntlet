@@ -12,7 +12,7 @@ API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
 def get_match(api_key = ''):
     if api_key != API_KEY: return {"error": "Unauthorized"}
     return {
-        "name": random.choice(glob('nn/nn-*.nnue')),
+        "name": random.choice(glob('nn/nn-*.nnue')).split("/")[-1],
         "tc": random.choice(["25k", "stc", "ltc"])
     }
 
