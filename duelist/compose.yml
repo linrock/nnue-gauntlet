@@ -4,5 +4,6 @@ services:
     build:
       dockerfile: ./Dockerfile
     container_name: nnue-duelist
+    image: nnue-duelist
     environment:
       - GAUNTLET_SERVER_IP
