@@ -6,11 +6,11 @@ function ordo_many() {
 
 if [[ $1 == *.nnue ]]; then
   echo 25k nodes
-  ordo_many pgns/*$1-25k*.pgn
+  ordo_many pgns/*$1-25k*.pgn | sed 's/^/  /'
   echo STC 10+0.1
-  ordo_many pgns/*$1-stc*.pgn
+  ordo_many pgns/*$1-stc*.pgn | sed 's/^/  /'
   echo LTC 60+0.6
-  ordo_many pgns/*$1-ltc*.pgn
+  ordo_many pgns/*$1-ltc*.pgn | sed 's/^/  /'
 else
   ordo_many $*
 fi
