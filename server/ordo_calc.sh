@@ -5,8 +5,11 @@ function ordo_many() {
 }
 
 if [[ $1 == *.nnue ]]; then
+  echo 25k nodes
   ordo_many pgns/*$1-25k*.pgn
+  echo STC 10+0.1
   ordo_many pgns/*$1-stc*.pgn
+  echo LTC 60+0.6
   ordo_many pgns/*$1-ltc*.pgn
 else
   ordo_many $*
