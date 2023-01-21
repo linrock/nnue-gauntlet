@@ -3,7 +3,7 @@ require 'json'
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
 API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
 
-5.times do
+(`nproc`.to_i / 16).times do
   fork do
     while true
       api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
