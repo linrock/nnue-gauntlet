@@ -1,0 +1,8 @@
+services:
+  nnue-duelist:
+    restart: always
+    build:
+      dockerfile: ./Dockerfile
+    container_name: nnue-duelist
+    environment:
+      - GAUNTLET_SERVER_IP

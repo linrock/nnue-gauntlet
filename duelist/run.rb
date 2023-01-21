@@ -1,7 +1,7 @@
 require 'json'
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
-API_URL = 'http://127.0.0.1:6055'
+API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
 
 5.times do
   fork do

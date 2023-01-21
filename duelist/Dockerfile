@@ -32,5 +32,5 @@ RUN chmod +x duel_vs_master.sh
 
 COPY run.rb .
 
-# CMD ruby run.rb
-CMD sleep infinity
+# CMD sleep infinity
+CMD ruby run.rb
