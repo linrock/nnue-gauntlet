@@ -26,15 +26,23 @@ case $2 in
     exit 1
 esac
 
+# randomly set the 1st and 2nd player in gauntlet matches
+if [ $(( $RANDOM % 2 )) == 0 ]; then
+  player1="cmd=stockfish name=master"
+  player2="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
+else
+  player1="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
+  player2="cmd=stockfish name=master"
+fi
+
 c-chess-cli \
   -gauntlet -rounds 1 -games $num_games -concurrency 16 \
   -each option.Threads=1 timeout=20 $tc_options \
   -openings \
     file=/gauntlet/books/UHO_XXL_+0.90_+1.19.epd \
-    order=random srand=${RANDOM}${RANDOM} \
-  -repeat -resign count=3 score=700 -draw count=8 score=10 \
-  -engine \
-    cmd=stockfish name=master \
-  -engine \
-    cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel \
+    order=random srand=${RANDOM}${RANDOM} -repeat \
+  -resign count=3 score=700 \
+  -draw count=8 score=10 \
+  -engine $player1 \
+  -engine $player2 \
   -pgn $pgn_filename 0
