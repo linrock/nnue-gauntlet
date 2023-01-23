@@ -1,12 +1,11 @@
 #!/bin/bash
-if [ "$#" -ne 3 ]; then
-  echo "Usage: ./duel_with_master.sh <nn_to_duel> <tc> <pgn_filename>"
+if [ "$#" -ne 2 ]; then
+  echo "Usage: ./duel_with_master.sh <nn_to_duel> <tc>"
   exit 0
 fi
 
 nn_to_duel=$1
 tc=$2
-pgn_filename=$3
 
 case $2 in
   25k)
@@ -35,6 +34,10 @@ else
   player2="cmd=stockfish name=master"
 fi
 
+pgn_filename="$player1-vs-$player2-$tc-$(date +%s)-$(( 10000 + ($RANDOM % 90000) )).pgn"
+echo "Duel: $player1 vs $player2 @ $tc"
+echo "PGN: $pgn_filename"
+
 c-chess-cli \
   -gauntlet -rounds 1 -games $num_games -concurrency 16 \
   -each option.Threads=1 timeout=20 $tc_options \
@@ -46,3 +49,5 @@ c-chess-cli \
   -engine $player1 \
   -engine $player2 \
   -pgn $pgn_filename 0
+
+puts $pgn_filename

@@ -49,10 +49,8 @@ CONCURRENCY.times do
     while true
       nn_to_duel, tc = get_match_data
       next unless nn_to_duel and tc
-      puts "Duel: master vs #{nn_to_duel} @ #{tc}"
-      nonce = "#{Time.now.to_i}-#{(10000 + rand*10000).to_i}"
-      pgn_filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
-      puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{pgn_filename}`
+      match_output = `./duel_vs_master.sh #{nn_to_duel} #{tc}`
+      pgn_filename = match_output.split(/\n/)[-1].strip
       upload_match_pgn nn_to_duel, pgn_filename
       sleep 3
     end
