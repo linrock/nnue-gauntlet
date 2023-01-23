@@ -14,7 +14,7 @@ def get_match(api_key = ''):
     if api_key != API_KEY: return {"error": "Unauthorized"}
     return {
         "name": random.choice(glob('nn/nn-*.nnue')).split("/")[-1],
-        "tc": random.choices(["25k", "stc", "ltc"], weights=[1, 3, 6])[0]
+        "tc": random.choices(["25k", "stc", "ltc"], weights=[1, 4, 12])[0]
     }
 
 @app.get('/nn')
