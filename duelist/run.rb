@@ -18,7 +18,7 @@ API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
       nonce = "#{Time.now.to_i}-#{(10000 + rand*10000).to_i}"
       filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
       puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{filename}`
-      api_response = `curl -F file=@#{filename} "#{API_URL}/pgns?api_key=#{API_KEY}"`
+      api_response = `curl -F file=@#{filename} -F name=#{nn_to_duel} "#{API_URL}/pgns?api_key=#{API_KEY}"`
       if api_response["success"]
         puts "Successfully uploaded #{filename}"
         `rm #{filename}`

@@ -3,6 +3,7 @@ import os.path
 import random
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
+from pathlib import Path
 from pydantic import BaseModel
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
@@ -28,11 +29,13 @@ def get_nn(api_key = '', name = ''):
         return {"error": "File not found"}
 
 @app.post('/pgns')
-def create_pgn(api_key: str, file: UploadFile):
+def create_pgn(api_key: str, file: UploadFile, name: str):
     if api_key != API_KEY: return {"error": "Unauthorized"}
-    print(f'Saving file: {file.filename}')
+    nn_pgn_dir = f'pgns/{name}/{file.filename}'
+    Path(nn_pgn_dir).mkdir(parents=True, exist_ok=True)
+    print(f'Saving file: {file.filename} to {nn_pgn_dir}')
     contents = file.file.read()
-    with open(f'pgns/{file.filename}', 'wb') as f:
+    with open(f'{nn_pgn_dir}/{file.filename}', 'wb') as f:
         f.write(contents)
     file.file.close()
-    return {"success": f'{file.filename} saved'}
+    return {"success": f'{file.filename} saved to {nn_pgn_dir}'}
