@@ -28,17 +28,17 @@ def get_match_data
   nn_to_duel, tc
 end
 
-def upload_match_pgn(nn_to_duel, filename)
+def upload_match_pgn(nn_to_duel, pgn_filename)
   10.times do
     begin
-      api_response = `curl -F file=@#{filename} -F name=#{nn_to_duel} "#{API_URL}/pgns?api_key=#{API_KEY}"`
+      api_response = `curl -F uploaded=@#{pgn_filename} -F name=#{nn_to_duel} "#{API_URL}/pgns?api_key=#{API_KEY}"`
       if api_response["success"]
-        puts "Successfully uploaded #{filename}"
-        `rm #{filename}`
+        puts "Successfully uploaded #{pgn_filename}"
+        `rm #{pgn_filename}`
         break
       end
     rescue
-      puts "Failed to upload #{filename} to server #{API_URL}"
+      puts "Failed to upload #{pgn_filename} to server #{API_URL}"
       sleep 60
     end
   end
@@ -51,9 +51,9 @@ CONCURRENCY.times do
       next unless nn_to_duel and tc
       puts "Duel: master vs #{nn_to_duel} @ #{tc}"
       nonce = "#{Time.now.to_i}-#{(10000 + rand*10000).to_i}"
-      filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
-      puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{filename}`
-      upload_match_pgn nn_to_duel, filename
+      pgn_filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
+      puts `./duel_vs_master.sh #{nn_to_duel} #{tc} #{pgn_filename}`
+      upload_match_pgn nn_to_duel, pgn_filename
       sleep 3
     end
   end
