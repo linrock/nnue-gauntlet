@@ -2,6 +2,7 @@ require 'json'
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
 API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
+CONCURRENCY = (`nproc`.to_i / 16)
 
 def get_match_data
   begin
@@ -31,7 +32,7 @@ def upload_match_pgn(nn_to_duel, filename)
   end
 end
 
-(`nproc`.to_i / 16).times do
+CONCURRENCY.times do
   fork do
     while true
       nn_to_duel, tc = get_match_data
