@@ -5,15 +5,15 @@ from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-app = FastAPI()
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
+app = FastAPI()
 
 @app.get('/match')
 def get_match(api_key = ''):
     if api_key != API_KEY: return {"error": "Unauthorized"}
     return {
         "name": random.choice(glob('nn/nn-*.nnue')).split("/")[-1],
-        "tc": random.choice(["25k", "stc", "stc", "ltc", "ltc", "ltc"])
+        "tc": random.choice(["25k", "stc", "stc", "stc", "ltc", "ltc", "ltc", "ltc", "ltc", "ltc"])
     }
 
 @app.get('/nn')
