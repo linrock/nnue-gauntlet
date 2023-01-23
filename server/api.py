@@ -13,7 +13,7 @@ def get_match(api_key = ''):
     if api_key != API_KEY: return {"error": "Unauthorized"}
     return {
         "name": random.choice(glob('nn/nn-*.nnue')).split("/")[-1],
-        "tc": random.choice(["25k", "stc", "stc", "stc", "ltc", "ltc", "ltc", "ltc", "ltc", "ltc"])
+        "tc": random.choices(["25k", "stc", "ltc"], weights=[1, 3, 6])[0]
     }
 
 @app.get('/nn')
@@ -28,7 +28,7 @@ def get_nn(api_key = '', name = ''):
         return {"error": "File not found"}
 
 @app.post('/pgns')
-def post_pgns(api_key: str, file: UploadFile):
+def create_pgn(api_key: str, file: UploadFile):
     if api_key != API_KEY: return {"error": "Unauthorized"}
     print(f'Saving file: {file.filename}')
     contents = file.file.read()
