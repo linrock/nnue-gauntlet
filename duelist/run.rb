@@ -16,7 +16,9 @@ def get_match_data
   end
   unless File.exists? nn_to_duel
     begin
-      `wget "#{API_URL}/nn?api_key=#{API_KEY}&name=#{nn_to_duel}" -O #{nn_to_duel}`
+      puts "Downloading #{nn_to_duel} ..."
+      `curl -sL "#{API_URL}/nn?api_key=#{API_KEY}&name=#{nn_to_duel}" -o #{nn_to_duel}`
+      puts `du -hs #{nn_to_duel}`
       puts `sha256sum #{nn_to_duel}`
     rescue
       puts "Failed to download #{nn_to_duel} from server #{API_URL}"
@@ -29,6 +31,7 @@ end
 
 def upload_match_pgn(nn_to_duel, pgn_filename)
   10.times do
+    puts "Uploading #{pgn_filename}"
     begin
       api_response = `curl -F pgn=@#{pgn_filename} "#{API_URL}/pgns?api_key=#{API_KEY}&nn_name=#{nn_to_duel}"`
       if api_response["success"]
