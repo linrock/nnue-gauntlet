@@ -7,10 +7,12 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
 RUN mkdir /gauntlet
 WORKDIR /gauntlet
 
-RUN git clone https://github.com/official-stockfish/Stockfish
-RUN git clone https://github.com/lucasart/c-chess-cli
+RUN git clone https://github.com/official-stockfish/Stockfish /gauntlet/Stockfish
+RUN git clone https://github.com/lucasart/c-chess-cli /gauntlet/c-chess-cli
 
 WORKDIR /gauntlet/Stockfish/src
+# nn-bc24c101ada0.nnue
+RUN git checkout 596a528c6a9ace6fb1a8407c86d972d96653418d
 RUN make -j profile-build ARCH=x86-64-bmi2
 RUN ln -s /gauntlet/Stockfish/src/stockfish /usr/local/bin/
 
