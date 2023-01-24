@@ -8,7 +8,7 @@ def get_match_data
   nn_to_duel, tc = begin
     api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
     match_data = JSON.parse api_response
-    return [match_data["name"], match_data["tc"]]
+    [match_data["name"], match_data["tc"]]
   rescue
     puts "Failed to get match data from server #{API_URL}"
     sleep 60

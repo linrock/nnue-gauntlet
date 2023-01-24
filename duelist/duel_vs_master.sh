@@ -27,11 +27,15 @@ esac
 
 # randomly set the 1st and 2nd player in gauntlet matches
 if [ $(( $RANDOM % 2 )) == 0 ]; then
-  player1="cmd=stockfish name=master"
-  player2="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
+  player1=master
+  player1_engine="cmd=stockfish name=master"
+  player2=$nn_to_duel
+  player2_engine="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
 else
-  player1="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
-  player2="cmd=stockfish name=master"
+  player1=$nn_to_duel
+  player1_engine="cmd=stockfish name=$nn_to_duel option.EvalFile=$nn_to_duel"
+  player2=master
+  player2_engine="cmd=stockfish name=master"
 fi
 
 pgn_filename="$player1-vs-$player2-$tc-$(date +%s)-$(( 10000 + ($RANDOM % 90000) )).pgn"
@@ -46,8 +50,8 @@ c-chess-cli \
     order=random srand=${RANDOM}${RANDOM} -repeat \
   -resign count=3 score=700 \
   -draw count=8 score=10 \
-  -engine $player1 \
-  -engine $player2 \
+  -engine $player1_engine \
+  -engine $player2_engine \
   -pgn $pgn_filename 0
 
-puts $pgn_filename
+echo $pgn_filename
