@@ -29,13 +29,13 @@ def get_nn(api_key = '', name = ''):
         return {"error": "File not found"}
 
 @app.post('/pgns')
-def create_pgn(api_key: str, uploaded: UploadFile, name: str):
+def create_pgn(api_key: str, pgn: UploadFile, nn_name: str):
     if api_key != API_KEY: return {"error": "Unauthorized"}
-    nn_pgn_dir = f'pgns/{name}/{uploaded.filename}'
+    nn_pgn_dir = f'pgns/{nn_name}'
     Path(nn_pgn_dir).mkdir(parents=True, exist_ok=True)
-    print(f'Saving file: {uploaded.filename} to {nn_pgn_dir}')
-    contents = uploaded.file.read()
-    with open(f'{nn_pgn_dir}/{uploaded.filename}', 'wb') as f:
+    print(f'Saving file: {pgn.filename} to {nn_pgn_dir}')
+    contents = pgn.file.read()
+    with open(f'{nn_pgn_dir}/{pgn.filename}', 'wb') as f:
         f.write(contents)
-    uploaded.file.close()
-    return {"success": f'{uploaded.filename} saved to {nn_pgn_dir}'}
+    pgn.file.close()
+    return {"success": f'{pgn.filename} saved to {nn_pgn_dir}'}
