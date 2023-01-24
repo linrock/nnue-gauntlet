@@ -5,16 +5,15 @@ API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
 CONCURRENCY = (`nproc`.to_i / 16)
 
 def get_match_data
-  nn_to_duel, tc =
-    begin
-      api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
-      match_data = JSON.parse api_response
-      match_data["name"], match_data["tc"]
-    rescue
-      puts "Failed to get match data from server #{API_URL}"
-      sleep 60
-      return nil
-    end
+  nn_to_duel, tc = begin
+    api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
+    match_data = JSON.parse api_response
+    return [match_data["name"], match_data["tc"]]
+  rescue
+    puts "Failed to get match data from server #{API_URL}"
+    sleep 60
+    return nil
+  end
   unless File.exists? nn_to_duel
     begin
       `wget "#{API_URL}/nn?api_key=#{API_KEY}&name=#{nn_to_duel}" -O #{nn_to_duel}`
@@ -25,7 +24,7 @@ def get_match_data
       return nil
     end
   end
-  nn_to_duel, tc
+  [nn_to_duel, tc]
 end
 
 def upload_match_pgn(nn_to_duel, pgn_filename)
