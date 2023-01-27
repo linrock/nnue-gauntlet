@@ -25,11 +25,17 @@ nnue_in_gauntlet.each do |nnue_name|
   ordo_output = `./ordo_calc.sh #{nnue_name}`
   results = parse_ordo_results(nnue_name, ordo_output)
   if results
+    vstc_rating = results.dig("25k nodes", :rating)
+    vstc_rating = !vstc_rating.nil? && vstc_rating > 0 ? vstc_rating.to_s.green : vstc_rating
+    stc_rating = results.dig("STC 10+0.1", :rating)
+    stc_rating = !stc_rating.nil? && stc_rating > 0 ? stc_rating.to_s.green : stc_rating
+    ltc_rating = results.dig("LTC 60+0.6", :rating)
+    ltc_rating = !ltc_rating.nil? && ltc_rating > 0 ? ltc_rating.to_s.green : ltc_rating
     gauntlet_results << [
       nnue_name,
-      "#{results.dig("25k nodes", :rating)} +/- #{results.dig("25k nodes", :error)}",
-      "#{results.dig("STC 10+0.1", :rating)} +/- #{results.dig("STC 10+0.1", :error)}",
-      "#{results.dig("LTC 60+0.6", :rating)} +/- #{results.dig("LTC 60+0.6", :error)}",
+      "#{vstc_rating} +/- #{results.dig("25k nodes", :error)}",
+      "#{stc_rating} +/- #{results.dig("STC 10+0.1", :error)}",
+      "#{ltc_rating} +/- #{results.dig("LTC 60+0.6", :error)}",
     ]
   end
 end
