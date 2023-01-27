@@ -16,7 +16,7 @@ WORKDIR /gauntlet
 RUN git clone https://github.com/michiguel/Ordo
 RUN cd Ordo && make && ln -s /gauntlet/Ordo/ordo /usr/local/bin/
 
-COPY ordo_calc.sh ordo_calc_all.sh symlink_nn.sh summarize_ordo.rb .
+COPY ordo_calc.sh ordo_calc_all.sh symlink_nn.sh list_nn.sh show_rankings.rb .
 COPY api.py .
 
 EXPOSE $PORT
