@@ -37,4 +37,7 @@ end
 table = Terminal::Table.new(
   headings: ['nnue', '25k nodes', 'STC 10+0.1', 'LTC 60+0.6'], rows: gauntlet_results
 )
+table.align_column 1, :right
+table.align_column 2, :right
+table.align_column 3, :right
 puts table
