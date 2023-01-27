@@ -40,12 +40,12 @@ nnue_in_gauntlet.each do |nnue_name|
       ltc_rating = !ltc_rating.nil? && ltc_rating > 0 ? ltc_rating.to_s.green : ltc_rating
       @gauntlet_results << [
         nnue_name,
-        "#{vstc_rating} +/- #{results.dig(N_25K, :error)}",
-        results.dig(N_25K, :played),
-        "#{stc_rating} +/- #{results.dig(STC, :error)}",
-        results.dig(STC, :played),
-        "#{ltc_rating} +/- #{results.dig(LTC, :error)}",
-        results.dig(LTC, :played),
+        vstc_rating ? "#{vstc_rating} +/- #{results.dig(N_25K, :error)}" : '--',
+        results.dig(N_25K, :played).to_i,
+        stc_rating ? "#{stc_rating} +/- #{results.dig(STC, :error)}" : '--',
+        results.dig(STC, :played).to_i,
+        ltc_rating ? "#{ltc_rating} +/- #{results.dig(LTC, :error)}" : '--',
+        results.dig(LTC, :played).to_i,
       ]
     end
   end
