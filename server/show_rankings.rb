@@ -29,7 +29,7 @@ nnue_in_gauntlet = `ls -1 nn/nn-*.nnue | xargs -n1 basename`.strip.split(/\n/)
 nnue_in_gauntlet.each do |nnue_name|
   ordo_threads << Thread.fork do
     # puts "ordo: #{nnue_name}"
-    ordo_output = `./ordo_calc.sh #{nnue_name}`
+    ordo_output = `./ordo_calc.sh #{nnue_name} 2>&1`
     results = parse_ordo_results(nnue_name, ordo_output)
     if results
       vstc_rating = results.dig(N_25K, :rating)
