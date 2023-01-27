@@ -9,8 +9,8 @@ def parse_ordo_results(nnue_name, ordo_output)
     elsif row =~ /LTC 60\+0\.6/
       tc = 'LTC 60+0.6'
     elsif row.include? nnue_name
-      rating, error = row.split(/\s+/)[4, 2].map(&:to_f)
-      rankings[tc] = { rating: rating, error: error }
+      rating, error, points, played = row.split(/\s+/)[4, 4].map(&:to_f)
+      rankings[tc] = { rating: rating, error: error, points: points, played: played }
     end
   end
   rankings
