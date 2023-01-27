@@ -6,6 +6,10 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
 RUN pip3 install fastapi python-multipart uvicorn
 RUN gem install colorize terminal-table
 
+WORKDIR /root
+COPY .bash_profile .
+RUN echo 'source .bash_profile' >> .bashrc
+
 RUN mkdir /gauntlet
 WORKDIR /gauntlet
 
