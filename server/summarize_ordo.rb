@@ -34,16 +34,17 @@ nnue_in_gauntlet.each do |nnue_name|
     gauntlet_results << [
       nnue_name,
       "#{vstc_rating} +/- #{results.dig("25k nodes", :error)}",
+      results.dig("25k nodes", :played),
       "#{stc_rating} +/- #{results.dig("STC 10+0.1", :error)}",
+      results.dig("STC 10+0.1", :played),
       "#{ltc_rating} +/- #{results.dig("LTC 60+0.6", :error)}",
+      results.dig("LTC 60+0.6", :played),
     ]
   end
 end
 
 table = Terminal::Table.new(
-  headings: ['nnue', '25k nodes', 'STC 10+0.1', 'LTC 60+0.6'], rows: gauntlet_results
+  headings: ['nnue', '25k nodes', '', 'STC 10+0.1', '', 'LTC 60+0.6'], rows: gauntlet_results
 )
-table.align_column 1, :right
-table.align_column 2, :right
-table.align_column 3, :right
+(1..6).each {|i| table.align_column i, :right }
 puts table
