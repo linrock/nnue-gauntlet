@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-RUN apt update
+RUN apt update --fix-missing
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC \
   apt install -y vim git tmux cmake wget curl ruby python3 python3-pip
 RUN pip3 install fastapi python-multipart uvicorn
@@ -8,7 +8,7 @@ RUN gem install colorize terminal-table
 
 WORKDIR /root
 COPY .bash_profile .
-RUN echo 'source .bash_profile' >> .bashrc
+RUN echo 'source /root/.bash_profile' >> .bashrc
 
 RUN mkdir /gauntlet
 WORKDIR /gauntlet
