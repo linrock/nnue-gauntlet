@@ -59,7 +59,7 @@ end
 ordo_threads.map(&:join)
 
 table = Terminal::Table.new(
-  headings: ['nnue', N_25K, '', '', STC, '', '', LTC],
+  headings: ['nnue', N_25K, '', '', STC, '', '', LTC, '', ''],
   rows: @gauntlet_results
 )
 (1..9).each {|i| table.align_column(i, :right) }
