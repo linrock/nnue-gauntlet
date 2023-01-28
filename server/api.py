@@ -1,13 +1,26 @@
+import asyncio
 from glob import glob
 import os.path
+from pathlib import Path
 import random
+
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
-from pathlib import Path
 from pydantic import BaseModel
+
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
 app = FastAPI()
+
+async def periodic_task():
+    while True:
+        # print('hello world', flush=True)
+        await asyncio.sleep(60)
+
+@app.on_event("startup")
+async def schedule_periodic():
+    loop = asyncio.get_event_loop()
+    loop.create_task(periodic_task())
 
 @app.get('/match')
 def get_match(api_key = ''):
