@@ -11,15 +11,15 @@ pgn_filename=$3
 case $2 in
   25k)
     tc_options="option.Hash=8 tc=10000+10000 nodes=25000"
-    num_games=2000
+    num_games=1000
     ;;
   stc)
     tc_options="option.Hash=16 tc=10+0.1"
-    num_games=500
+    num_games=250
     ;;
   ltc)
     tc_options="option.Hash=64 tc=60+0.6"
-    num_games=100
+    num_games=50
     ;;
   *)
     echo "tc must be one of: 25k, stc, ltc"
