@@ -48,7 +48,7 @@ def get_nn(name = ''):
         raise HTTPException(status_code=404, detail="File not found")
 
 @app.post('/pgns', dependencies=[Security(require_api_key)])
-def create_pgn(api_key: str, pgn: UploadFile, nn_name: str):
+def create_pgn(pgn: UploadFile, nn_name: str):
     nn_pgn_dir = f'pgns/{nn_name}'
     Path(nn_pgn_dir).mkdir(parents=True, exist_ok=True)
     print(f'Saving file: {pgn.filename} to {nn_pgn_dir}')
