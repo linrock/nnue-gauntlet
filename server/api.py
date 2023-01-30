@@ -30,9 +30,8 @@ async def schedule_periodic():
     loop = asyncio.get_event_loop()
     loop.create_task(periodic_task())
 
-@app.get('/match')
-def get_match(api_key = ''):
-    if api_key != API_KEY: return {"error": "Unauthorized"}
+@app.get('/match', dependencies=[Security(require_api_key)])
+def get_match():
     return {
         "name": random.choice(glob('nn/nn-*.nnue')).split("/")[-1],
         "tc": random.choices(["25k", "stc", "ltc"], weights=[1, 4, 12])[0]
@@ -46,11 +45,10 @@ def get_nn(name = ''):
             media_type='application/octet-stream',
             filename=name)
     else:
-        return {"error": "File not found"}
+        raise HTTPException(status_code=404, detail="File not found")
 
-@app.post('/pgns')
+@app.post('/pgns', dependencies=[Security(require_api_key)])
 def create_pgn(api_key: str, pgn: UploadFile, nn_name: str):
-    if api_key != API_KEY: return {"error": "Unauthorized"}
     nn_pgn_dir = f'pgns/{nn_name}'
     Path(nn_pgn_dir).mkdir(parents=True, exist_ok=True)
     print(f'Saving file: {pgn.filename} to {nn_pgn_dir}')
