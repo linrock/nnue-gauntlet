@@ -4,13 +4,21 @@ import os.path
 from pathlib import Path
 import random
 
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, HTTPException, Security, UploadFile
 from fastapi.responses import FileResponse
+from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
+API_KEY_HEADER = 'X-Api-Key'
+
+api_key_header_auth = APIKeyHeader(name=API_KEY_HEADER, auto_error=False)
 app = FastAPI()
+
+async def require_api_key(api_key_header: str = Security(api_key_header_auth)):
+    if api_key_header != API_KEY:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 async def periodic_task():
     while True:
@@ -30,9 +38,8 @@ def get_match(api_key = ''):
         "tc": random.choices(["25k", "stc", "ltc"], weights=[1, 4, 12])[0]
     }
 
-@app.get('/nn')
-def get_nn(api_key = '', name = ''):
-    if api_key != API_KEY: return {"error": "Unauthorized"}
+@app.get('/nn', dependencies=[Security(require_api_key)])
+def get_nn(name = ''):
     nn_filepath = f'nn/{name}'
     if os.path.isfile(nn_filepath):
         return FileResponse(nn_filepath,
