@@ -33,13 +33,13 @@ nnue_in_gauntlet.each do |nnue_name|
     results = parse_ordo_results(nnue_name, ordo_output)
     if results
       vstc_rating = results.dig(N_25K, :rating)
-      vstc_rating = !vstc_rating.nil? && vstc_rating > 0 ? vstc_rating.to_s.green : vstc_rating
+      vstc_rating = !vstc_rating.nil? && vstc_rating > 0.9 ? vstc_rating.to_s.green : vstc_rating
       vstc_spread = (results.dig(N_25K, :points).to_i - results.dig(N_25K, :played).to_i / 2)
       stc_rating = results.dig(STC, :rating)
-      stc_rating = !stc_rating.nil? && stc_rating > 0 ? stc_rating.to_s.green : stc_rating
+      stc_rating = !stc_rating.nil? && stc_rating > 0.9 ? stc_rating.to_s.green : stc_rating
       stc_spread = (results.dig(STC, :points).to_i - results.dig(STC, :played).to_i / 2)
       ltc_rating = results.dig(LTC, :rating)
-      ltc_rating = !ltc_rating.nil? && ltc_rating > 0 ? ltc_rating.to_s.green : ltc_rating
+      ltc_rating = !ltc_rating.nil? && ltc_rating > 0.9 ? ltc_rating.to_s.green : ltc_rating
       ltc_spread = (results.dig(LTC, :points).to_i - results.dig(LTC, :played).to_i / 2)
       @gauntlet_results << [
         nnue_name,
