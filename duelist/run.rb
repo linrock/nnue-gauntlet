@@ -2,11 +2,11 @@ require 'json'
 
 API_KEY = 'stsRvxw3RbM6zaI1qXwknZQQ30xQ9QtEFKZedcusTC2y5nx7'
 API_URL = "http://#{ENV['GAUNTLET_SERVER_IP']}:6055"
-CONCURRENCY = (`nproc`.to_i / 16)
+CONCURRENCY = ((`nproc`.to_i - 1) / 16)
 
 def get_match_data
   nn_to_duel, tc = begin
-    api_response = `curl -sL #{API_URL}/match?api_key=#{API_KEY}`
+    api_response = `curl -sL -H "x-api-key: #{API_KEY}" #{API_URL}/match`
     match_data = JSON.parse api_response
     [match_data["name"], match_data["tc"]]
   rescue
@@ -17,7 +17,7 @@ def get_match_data
   unless File.exists? nn_to_duel
     begin
       puts "Downloading #{nn_to_duel} ..."
-      `curl -sL "#{API_URL}/nn?api_key=#{API_KEY}&name=#{nn_to_duel}" -o #{nn_to_duel}`
+      `curl -sL -H "x-api-key: #{API_KEY}" "#{API_URL}/nn?name=#{nn_to_duel}" -o #{nn_to_duel}`
       puts `du -hs #{nn_to_duel}`
       puts `sha256sum #{nn_to_duel}`
     rescue
@@ -33,7 +33,7 @@ def upload_match_pgn(nn_to_duel, pgn_filename)
   10.times do
     puts "Uploading #{pgn_filename}"
     begin
-      api_response = `curl -F pgn=@#{pgn_filename} "#{API_URL}/pgns?api_key=#{API_KEY}&nn_name=#{nn_to_duel}"`
+      api_response = `curl -H "x-api-key: #{API_KEY}" -F pgn=@#{pgn_filename} "#{API_URL}/pgns?nn_name=#{nn_to_duel}"`
       if api_response["success"]
         puts "Successfully uploaded #{pgn_filename}"
         `rm #{pgn_filename}`
