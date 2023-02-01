@@ -51,9 +51,12 @@ CONCURRENCY.times do |i|
     while true
       nn_to_duel, tc = get_match_data
       next unless nn_to_duel and tc
-      nonce = "#{Time.now.to_i}-#{(10000 + rand*80000).to_i}"
+      t_start = Time.now
+      nonce = "#{t_start.to_i}-#{(10000 + rand*80000).to_i}"
       pgn_filename = "master-vs-#{nn_to_duel}-#{tc}-#{nonce}.pgn"
       system("./duel_vs_master.sh #{nn_to_duel} #{tc} #{pgn_filename}", out: STDOUT)
+      t_end = Time.now
+      puts "Duel complete: #{nn_to_duel} #{tc} in #{(t_end - t_start).round(3)} seconds"
       upload_match_pgn nn_to_duel, pgn_filename
       sleep 3
     end
