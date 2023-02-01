@@ -47,7 +47,6 @@ def upload_match_pgn(nn_to_duel, pgn_filename)
 end
 
 CONCURRENCY.times do |i|
-  sleep (i+1)*10
   fork do
     while true
       nn_to_duel, tc = get_match_data
