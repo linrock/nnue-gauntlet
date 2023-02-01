@@ -2,13 +2,14 @@ from contextlib import ExitStack
 import os
 import subprocess
 import sys
+import time
 
-if len(sys.argv) != 2:
-    print("Usage: ./get_adjusted_tc.py <10+0.1 or 60+0.6>")
+if len(sys.argv) != 3:
+    print("Usage: ./get_adjusted_tc.py <10+0.1 or 60+0.6> <concurrency>")
     sys.exit(0)
 
 # Modified from: https://github.com/glinscott/fishtest/blob/master/worker/games.py
-def get_bench_nps(engine):
+def get_bench_nps(engine, active_cores):
     cpu_features = "?"
     with subprocess.Popen(
         [engine, "compiler"],
@@ -28,6 +29,24 @@ def get_bench_nps(engine):
             )
         )
     with ExitStack() as stack:
+        if active_cores > 1:
+            busy_process = stack.enter_context(
+                subprocess.Popen(
+                    [engine],
+                    stdin=subprocess.PIPE,
+                    stdout=subprocess.DEVNULL,
+                    universal_newlines=True,
+                    bufsize=1,
+                    close_fds=True,
+                )
+            )
+            busy_process.stdin.write(
+                "setoption name Threads value {}\n".format(active_cores - 1)
+            )
+            busy_process.stdin.write("go infinite\n")
+            busy_process.stdin.flush()
+            time.sleep(1)  # wait CPU loading
+
         bench_sig = None
         bench_nps = None
         p = stack.enter_context(
@@ -45,6 +64,10 @@ def get_bench_nps(engine):
                 bench_sig = line.split(": ")[1].strip()
             if "Nodes/second" in line:
                 bench_nps = float(line.split(": ")[1].strip())
+
+        if active_cores > 1:
+            busy_process.communicate("quit\n")
+
     if p.returncode != 0:
         if p.returncode == 1:  # EXIT_FAILURE
             raise RunException(
@@ -93,5 +116,7 @@ def adjust_tc(tc, factor):
 
 
 tc = sys.argv[1]
-bench_nps = get_bench_nps('./Stockfish/src/stockfish')
+concurrency = int(sys.argv[2])
+
+bench_nps = get_bench_nps('./Stockfish/src/stockfish', concurrency)
 print(adjust_tc(tc, 1328000 / bench_nps))

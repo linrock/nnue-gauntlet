@@ -4,6 +4,8 @@ if [ "$#" -ne 3 ]; then
   exit 0
 fi
 
+concurrency=16
+
 nn_to_duel=$1
 tc=$2
 pgn_filename=$3
@@ -15,14 +17,14 @@ case $2 in
     ;;
   stc)
     echo "Getting adjusted TC for 10+0.1 ..."
-    adjusted_tc=$(python3 get_adjusted_tc.py 10+0.1)
+    adjusted_tc=$(python3 get_adjusted_tc.py 10+0.1 $concurrency)
     echo "Adjusted TC from 10+0.1 to $adjusted_tc"
     tc_options="option.Hash=16 tc=$adjusted_tc"
     num_games=250
     ;;
   ltc)
     echo "Getting adjusted TC for 60+0.6 ..."
-    adjusted_tc=$(python3 get_adjusted_tc.py 60+0.6)
+    adjusted_tc=$(python3 get_adjusted_tc.py 60+0.6 $concurrency)
     echo "Adjusted TC from 60+0.6 to $adjusted_tc"
     tc_options="option.Hash=64 tc=$adjusted_tc"
     num_games=50
@@ -49,7 +51,7 @@ echo "Duel: $player1 vs $player2 @ $tc ($adjusted_tc)"
 echo "PGN: $pgn_filename"
 
 c-chess-cli \
-  -gauntlet -rounds 1 -games $num_games -concurrency 16 \
+  -gauntlet -rounds 1 -games $num_games -concurrency $concurrency \
   -each option.Threads=1 timeout=20 $tc_options \
   -openings \
     file=/gauntlet/books/UHO_XXL_+0.90_+1.19.epd \
