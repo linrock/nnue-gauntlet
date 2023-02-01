@@ -29,7 +29,7 @@ RUN unzip UHO_XXL_+0.90_+1.19.epd.zip
 RUN rm UHO_XXL_+0.90_+1.19.epd.zip
 
 WORKDIR /gauntlet
-COPY duel_vs_master.sh .
+COPY duel_vs_master.sh get_adjusted_tc.py .
 RUN chmod +x duel_vs_master.sh
 
 COPY run.rb .
