@@ -12,6 +12,7 @@ pgn_filename=$3
 
 case $2 in
   25k)
+    adjusted_tc=25k
     tc_options="option.Hash=8 tc=10000+10000 nodes=25000"
     num_games=1000
     ;;
