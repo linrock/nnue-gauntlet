@@ -45,7 +45,7 @@ else
   player2_engine="cmd=stockfish name=master"
 fi
 
-echo "Duel: $player1 vs $player2 @ $tc"
+echo "Duel: $player1 vs $player2 @ $tc ($adjusted_tc)"
 echo "PGN: $pgn_filename"
 
 c-chess-cli \
