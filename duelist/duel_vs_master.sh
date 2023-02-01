@@ -48,8 +48,8 @@ c-chess-cli \
   -openings \
     file=/gauntlet/books/UHO_XXL_+0.90_+1.19.epd \
     order=random srand=${RANDOM}${RANDOM} -repeat \
-  -resign count=3 score=700 \
-  -draw count=8 score=10 \
+  -resign count=3 score=600 \
+  -draw number=34 count=8 score=20 \
   -engine $player1_engine \
   -engine $player2_engine \
   -pgn $pgn_filename 0
