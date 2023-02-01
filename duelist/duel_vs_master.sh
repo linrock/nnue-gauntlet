@@ -14,11 +14,15 @@ case $2 in
     num_games=1000
     ;;
   stc)
-    tc_options="option.Hash=16 tc=10+0.1"
+    adjusted_tc=$(python3 get_adjusted_tc.py 10+0.1)
+    echo "Adjusted TC from 10+0.1 to $adjusted_tc"
+    tc_options="option.Hash=16 tc=$adjusted_tc"
     num_games=250
     ;;
   ltc)
-    tc_options="option.Hash=64 tc=60+0.6"
+    adjusted_tc=$(python3 get_adjusted_tc.py 60+0.6)
+    echo "Adjusted TC from 60+0.6 to $adjusted_tc"
+    tc_options="option.Hash=64 tc=$adjusted_tc"
     num_games=50
     ;;
   *)

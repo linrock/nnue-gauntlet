@@ -93,5 +93,5 @@ def adjust_tc(tc, factor):
 
 
 tc = sys.argv[1]
-bench_nps = get_bench_nps('./stockfish')
+bench_nps = get_bench_nps('./Stockfish/src/stockfish')
 print(adjust_tc(tc, 1328000 / bench_nps))
