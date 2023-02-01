@@ -49,6 +49,7 @@ end
 CONCURRENCY.times do
   fork do
     while true
+      sleep rand*15
       nn_to_duel, tc = get_match_data
       next unless nn_to_duel and tc
       nonce = "#{Time.now.to_i}-#{(10000 + rand*80000).to_i}"
